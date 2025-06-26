@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANIMAIS RESGATADOS PELA COPPA</title>
+    <title>ANIMAIS RESGATADOS PELA COPPA - Sistema Autenticado</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
     <!-- Firebase SDK -->
@@ -68,6 +68,7 @@
             color: #333;
         }
 
+        /* Melhorias visuais adicionadas */
         .auth-container {
             min-height: 100vh;
             display: flex;
@@ -86,6 +87,18 @@
             width: 100%;
             max-width: 400px;
             text-align: center;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .coppa-logo {
@@ -95,6 +108,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         .login-title {
@@ -137,6 +157,7 @@
             outline: none;
             border-color: #129462;
             box-shadow: 0 0 0 3px rgba(18, 148, 98, 0.1);
+            transform: translateY(-2px);
         }
 
         .login-btn {
@@ -151,6 +172,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
         }
 
         .login-btn:hover {
@@ -169,6 +192,7 @@
             cursor: pointer;
             text-decoration: underline;
             font-size: 0.9em;
+            transition: color 0.3s ease;
         }
 
         .toggle-mode:hover {
@@ -185,11 +209,27 @@
             text-align: center;
             margin-bottom: 40px;
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 30px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: rotate 8s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
         }
 
         .header h1 {
@@ -197,11 +237,15 @@
             font-size: 2.5em;
             margin-bottom: 10px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
         }
 
         .header p {
             color: rgba(255, 255, 255, 0.9);
             font-size: 1.2em;
+            position: relative;
+            z-index: 1;
         }
 
         .user-info {
@@ -240,6 +284,18 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .period-filters {
@@ -250,6 +306,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.6s ease 0.1s both;
         }
 
         .filter-section {
@@ -283,12 +340,14 @@
         .filter-btn:hover {
             background: #e9ecef;
             border-color: #3498db;
+            transform: translateY(-1px);
         }
 
         .filter-btn.active {
             background: #3498db;
             color: white;
             border-color: #2980b9;
+            transform: translateY(-1px);
         }
 
         .date-inputs {
@@ -303,6 +362,12 @@
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .date-inputs input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
 
         .btn {
@@ -316,6 +381,26 @@
             font-weight: 600;
             transition: all 0.3s ease;
             margin: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn:hover {
@@ -389,11 +474,11 @@
         @keyframes modalSlideIn {
             from {
                 opacity: 0;
-                transform: translateY(-50px);
+                transform: translateY(-50px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
@@ -406,10 +491,12 @@
             position: absolute;
             top: 15px;
             right: 20px;
+            transition: color 0.3s ease;
         }
 
         .close:hover {
             color: #e74c3c;
+            transform: scale(1.1);
         }
 
         .form-group {
@@ -432,7 +519,7 @@
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1em;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
             box-sizing: border-box;
             font-family: inherit;
         }
@@ -443,6 +530,7 @@
             outline: none;
             border-color: #3498db;
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-1px);
         }
 
         .form-group textarea {
@@ -464,6 +552,7 @@
             border: 3px solid rgba(255, 255, 255, 0.3);
             position: relative;
             overflow: hidden;
+            animation: fadeInUp 0.6s ease 0.2s both;
         }
 
         .total-card::before {
@@ -528,10 +617,11 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease calc(0.3s + var(--delay, 0s)) both;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.02);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
         }
 
@@ -560,6 +650,12 @@
             letter-spacing: 1px;
         }
 
+        .animal-icon {
+            font-size: 1.5em;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
         .charts-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -574,6 +670,20 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 0.6s ease calc(0.4s + var(--delay, 0s)) both;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .chart-card canvas {
+            flex: 1;
+            max-height: 320px;
         }
 
         .chart-title {
@@ -592,6 +702,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.6s ease 0.5s both;
         }
 
         .timeline {
@@ -609,6 +720,18 @@
             border-left: 4px solid;
             transition: all 0.3s ease;
             position: relative;
+            animation: fadeInLeft 0.4s ease calc(var(--delay, 0s)) both;
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .timeline-item:hover {
@@ -648,6 +771,11 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.8em;
+            transition: transform 0.2s ease;
+        }
+
+        .timeline-actions button:hover {
+            transform: scale(1.05);
         }
 
         .location-stats {
@@ -665,6 +793,12 @@
             align-items: center;
             padding: 12px 0;
             border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .location-item:hover {
+            background: rgba(52, 152, 219, 0.05);
+            transform: translateX(5px);
         }
 
         .location-item:last-child {
@@ -678,11 +812,7 @@
             border-radius: 20px;
             font-weight: bold;
             font-size: 0.9em;
-        }
-
-        .animal-icon {
-            font-size: 1.5em;
-            margin-bottom: 8px;
+            animation: pulse 2s infinite;
         }
 
         .fade-in {
@@ -722,6 +852,7 @@
             border-radius: 8px;
             margin: 15px 0;
             border-left: 4px solid #e74c3c;
+            animation: slideInDown 0.3s ease;
         }
 
         .success-message {
@@ -731,6 +862,18 @@
             border-radius: 8px;
             margin: 15px 0;
             border-left: 4px solid #27ae60;
+            animation: slideInDown 0.3s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .search-container {
@@ -750,12 +893,14 @@
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1em;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .search-container input:focus {
             outline: none;
             border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-1px);
         }
 
         .form-row {
@@ -766,6 +911,48 @@
 
         .hidden {
             display: none !important;
+        }
+
+        /* Floating action button adicionado */
+        .floating-action {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 2em;
+            cursor: pointer;
+            box-shadow: 0 15px 30px rgba(39, 174, 96, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+            animation: bounceIn 1s ease 1s both;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .floating-action:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 20px 40px rgba(39, 174, 96, 0.6);
         }
 
         @media (max-width: 768px) {
@@ -848,6 +1035,14 @@
             .login-card {
                 padding: 30px 20px;
             }
+
+            .floating-action {
+                bottom: 20px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+                font-size: 1.5em;
+            }
         }
     </style>
 </head>
@@ -896,8 +1091,8 @@
                     👤 <span id="user-email"></span>
                     <button class="logout-btn" onclick="logout()">🚪 Sair</button>
                 </div>
-                <h1>🐍 SEA - COPPA</h1>
-                <p>Gestão de Resgates | Região Metropolitana de Salvador</p>
+                <h1>🐍 DASHBOARD ADMINISTRATIVO - COPPA</h1>
+                <p>Sistema Autenticado de Gestão de Resgates | Região Metropolitana de Salvador</p>
             </div>
 
             <!-- Filtros por Período -->
@@ -905,7 +1100,7 @@
                 <h3>📅 Filtros por Período</h3>
                 
                 <div class="filter-section">
-                    <h4>Períodos:</h4>
+                    <h4>Períodos Rápidos:</h4>
                     <div class="filter-buttons">
                         <button class="filter-btn active" onclick="setPeriod('all')">Todos os Dados</button>
                         <button class="filter-btn" onclick="setPeriod('today')">Hoje</button>
@@ -972,7 +1167,7 @@
             <div class="total-card fade-in">
                 <div class="total-number" id="total-count">0</div>
                 <div class="total-label">TOTAL DE ANIMAIS RESGATADOS</div>
-                <div class="total-subtitle" id="period-subtitle">Sistema COPPA - 🔐</div>
+                <div class="total-subtitle" id="period-subtitle">Sistema COPPA - Autenticado 🔐</div>
             </div>
 
             <div class="stats-grid" id="stats-grid">
@@ -982,11 +1177,11 @@
             <div class="charts-container">
                 <div class="chart-card">
                     <div class="chart-title">Distribuição por Tipo de Animal</div>
-                    <canvas id="animalChart" width="400" height="300"></canvas>
+                    <canvas id="animalChart" width="400" height="320"></canvas>
                 </div>
                 <div class="chart-card">
                     <div class="chart-title">Resgates por Período</div>
-                    <canvas id="periodChart" width="400" height="300"></canvas>
+                    <canvas id="periodChart" width="400" height="320"></canvas>
                 </div>
             </div>
 
@@ -999,7 +1194,7 @@
                 </div>
                 <div class="chart-card">
                     <div class="chart-title">Resgates por Horário</div>
-                    <canvas id="timeChart" width="400" height="300"></canvas>
+                    <canvas id="timeChart" width="400" height="320"></canvas>
                 </div>
             </div>
 
@@ -1086,6 +1281,11 @@
         </div>
     </div>
 
+    <!-- Floating Action Button -->
+    <button class="floating-action" onclick="openAddModal()" title="Adicionar Novo Resgate">
+        +
+    </button>
+
     <script>
         // Configuração dos tipos de animais
         const animalConfig = {
@@ -1112,12 +1312,22 @@
         let currentUser = null;
         let isLoginMode = true;
 
-        // Dados de exemplo com datas variadas para demonstrar os filtros
+        // Dados de exemplo com localização corrigida e variações problemáticas para teste
         const initialData = [
-            // Dados de hoje (25/06/2025) para testar filtros
-            { animal: 'serpente', species: 'Jiboia', date: '2025-06-25', time: '14:30', location: 'Salvador - Pituba', observations: 'Animal resgatado hoje - teste' },
-            { animal: 'iguana', species: 'Iguana Verde', date: '2025-06-25', time: '09:15', location: 'Salvador - Barra', observations: 'Resgate de hoje' },
-            { animal: 'ave_rapina', species: 'Carcará', date: '2025-06-24', time: '16:45', location: 'Camaçari - Centro', observations: 'Resgate de ontem' },
+            // Dados de hoje (26/06/2025) para testar filtros
+            { animal: 'serpente', species: 'Jiboia', date: '2025-06-26', time: '14:30', location: 'Salvador - Pituba', observations: 'Animal resgatado hoje - teste' },
+            { animal: 'iguana', species: 'Iguana Verde', date: '2025-06-26', time: '09:15', location: 'Salvador - Barra', observations: 'Resgate de hoje' },
+            { animal: 'ave_rapina', species: 'Carcará', date: '2025-06-25', time: '16:45', location: 'Camaçari - Centro', observations: 'Resgate de ontem' },
+            
+            // Exemplos das variações problemáticas mencionadas pelo usuário
+            { animal: 'teiu', species: 'Teiú Comum', date: '2025-06-24', time: '10:30', location: 'Salvador - Ogunjá', observations: 'Teste de bairro Ogunjá' },
+            { animal: 'serpente', species: 'Jiboia', date: '2025-06-24', time: '11:15', location: 'Salvador -Canela', observations: 'Formato problemático - sem espaço antes do hífen' },
+            { animal: 'iguana', species: 'Iguana', date: '2025-06-24', time: '12:00', location: 'Salvador- Pituba', observations: 'Formato problemático - sem espaço depois do hífen' },
+            { animal: 'ave_rapina', species: 'Bem-te-vi', date: '2025-06-24', time: '13:30', location: 'Salvador-Plataforma', observations: 'Formato problemático - sem espaços' },
+            { animal: 'jabuti', species: 'Jabuti', date: '2025-06-24', time: '14:45', location: 'Salvador  -  Pituaçu', observations: 'Formato problemático - espaços extras' },
+            { animal: 'sariguê', species: 'Gambá', date: '2025-06-24', time: '15:20', location: 'Salvador - Fazenda Grande III', observations: 'Bairro com numeração' },
+            { animal: 'primata', species: 'Sagui', date: '2025-06-24', time: '16:10', location: 'Salvador -Brotas', observations: 'Mais um formato problemático' },
+            { animal: 'mamifero', species: 'Tamanduá', date: '2025-06-24', time: '17:00', location: 'Salvador- Bonocô', observations: 'Último formato problemático' },
             
             // Dados históricos
             { animal: 'serpente', species: 'Jiboia', date: '2024-12-20', time: '14:30', location: 'Salvador - Pituba', observations: 'Animal em bom estado' },
@@ -1587,7 +1797,7 @@
                 <p>${description}</p>
             `;
             
-            subtitleElement.textContent = `${title} - ${filteredData.length} resgates `;
+            subtitleElement.textContent = `${title} - ${filteredData.length} resgates - 🔐 Autenticado`;
         }
 
         function updateConnectionStatus(isFirebase) {
@@ -1633,7 +1843,12 @@
                 
                 const firebaseData = [];
                 querySnapshot.forEach((doc) => {
-                    firebaseData.push({ id: doc.id, ...doc.data() });
+                    const data = doc.data();
+                    // Normalizar localização dos dados do Firebase
+                    if (data.location) {
+                        data.location = normalizeLocation(data.location);
+                    }
+                    firebaseData.push({ id: doc.id, ...data });
                 });
 
                 if (firebaseData.length > 0) {
@@ -1652,8 +1867,13 @@
                 rescueData = initialData.map((item, index) => ({
                     ...item,
                     id: `sample_${index + 1}`,
+                    location: normalizeLocation(item.location), // Normalizar dados existentes
                     timestamp: new Date()
                 }));
+                
+                // Corrigir dados de localização existentes que podem estar mal formatados
+                cleanupLocationData();
+                
                 filteredData = filterDataByPeriod(rescueData, currentPeriod);
                 updateDashboard();
                 updateConnectionStatus(false);
@@ -1663,6 +1883,23 @@
                 showError('Erro ao carregar dados.');
                 updateConnectionStatus(false);
             }
+        }
+
+        // Nova função para limpar dados de localização inconsistentes
+        function cleanupLocationData() {
+            console.log('🧹 Limpando dados de localização inconsistentes...');
+            
+            rescueData.forEach((rescue, index) => {
+                const originalLocation = rescue.location;
+                const normalizedLocation = normalizeLocation(originalLocation);
+                
+                if (originalLocation !== normalizedLocation) {
+                    console.log(`📍 Corrigindo: "${originalLocation}" → "${normalizedLocation}"`);
+                    rescue.location = normalizedLocation;
+                }
+            });
+            
+            console.log('✅ Limpeza de localização concluída');
         }
 
         function setupEventListeners() {
@@ -1753,12 +1990,13 @@
             const sortedAnimals = Object.entries(animalCounts)
                 .sort((a, b) => b[1] - a[1]);
 
-            sortedAnimals.forEach(([animalType, count]) => {
+            sortedAnimals.forEach(([animalType, count], index) => {
                 const config = animalConfig[animalType];
                 if (!config) return;
 
                 const statCard = document.createElement('div');
                 statCard.className = 'stat-card fade-in';
+                statCard.style.setProperty('--delay', `${index * 0.1}s`);
                 statCard.innerHTML = `
                     <div class="animal-icon">${config.icon}</div>
                     <div class="stat-number ${animalType}" style="color: ${config.color}">${count}</div>
@@ -1824,14 +2062,33 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             position: 'bottom',
                             labels: {
                                 padding: 15,
-                                font: { size: 11 }
+                                font: { size: 11 },
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed * 100) / total).toFixed(1);
+                                    return `${context.label}: ${context.parsed} (${percentage}%)`;
+                                }
                             }
                         }
+                    },
+                    animation: {
+                        duration: 800,
+                        easing: 'easeOutQuart'
                     }
                 }
             });
@@ -1847,7 +2104,7 @@
             let chartData, chartLabels, chartTitle;
             
             if (currentPeriod === 'all' || currentPeriod === 'year' || currentPeriod === 'lastYear') {
-                // Gráfico por mês
+                // Gráfico por mês - CORRIGIDO para funcionar com "Todos os Dados"
                 const monthCounts = filteredData.reduce((acc, rescue) => {
                     const month = rescue.date.substring(0, 7); // YYYY-MM
                     acc[month] = (acc[month] || 0) + 1;
@@ -1857,6 +2114,15 @@
                 chartLabels = Object.keys(monthCounts).sort();
                 chartData = chartLabels.map(month => monthCounts[month]);
                 chartTitle = 'Resgates por Mês';
+                
+                // Formatear labels dos meses para ficar mais bonito
+                chartLabels = chartLabels.map(month => {
+                    const [year, monthNum] = month.split('-');
+                    const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+                                      'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                    return `${monthNames[parseInt(monthNum) - 1]}/${year.slice(-2)}`;
+                });
+                
             } else if (currentPeriod === 'month' || currentPeriod === 'lastMonth') {
                 // Gráfico por dia do mês
                 const dayCounts = filteredData.reduce((acc, rescue) => {
@@ -1868,6 +2134,7 @@
                 chartLabels = Object.keys(dayCounts).sort((a, b) => parseInt(a) - parseInt(b));
                 chartData = chartLabels.map(day => dayCounts[day]);
                 chartTitle = 'Resgates por Dia do Mês';
+                
             } else if (currentPeriod === 'week' || currentPeriod === 'lastWeek') {
                 // Gráfico por dia da semana
                 const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -1881,6 +2148,7 @@
                 chartLabels = dayNames;
                 chartData = dayNames.map(day => dayCounts[day] || 0);
                 chartTitle = 'Resgates por Dia da Semana';
+                
             } else {
                 // Para períodos customizados ou muito específicos, mostrar por data
                 const dateCounts = filteredData.reduce((acc, rescue) => {
@@ -1891,6 +2159,12 @@
                 chartLabels = Object.keys(dateCounts).sort();
                 chartData = chartLabels.map(date => dateCounts[date]);
                 chartTitle = 'Resgates por Data';
+                
+                // Formatear datas para períodos customizados
+                chartLabels = chartLabels.map(date => {
+                    const [year, month, day] = date.split('-');
+                    return `${day}/${month}`;
+                });
                 
                 // Limitar a 30 pontos para não sobrecarregar o gráfico
                 if (chartLabels.length > 30) {
@@ -1911,19 +2185,48 @@
                         backgroundColor: 'rgba(52, 152, 219, 0.1)',
                         borderWidth: 3,
                         fill: true,
-                        tension: 0.4
+                        tension: 0.4,
+                        pointBackgroundColor: '#3498db',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
                     }]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
-                        legend: { display: false }
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.parsed.y} resgate${context.parsed.y > 1 ? 's' : ''}`;
+                                }
+                            }
+                        }
                     },
                     scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)',
+                            }
+                        },
                         y: {
                             beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)',
+                            },
                             ticks: { stepSize: 1 }
                         }
+                    },
+                    animation: {
+                        duration: 800,
+                        easing: 'easeOutQuart'
                     }
                 }
             });
@@ -1971,26 +2274,49 @@
             });
         }
 
+        // FUNÇÃO CORRIGIDA - Principal mudança aqui
         function updateLocationStats() {
-            const cityCounts = filteredData.reduce((acc, rescue) => {
-                let city;
-                if (rescue.location.includes(' - ')) {
-                    city = rescue.location.split(' - ')[0];
+            console.log('📍 Atualizando estatísticas de localização...');
+            console.log('Dados filtrados:', filteredData.map(r => r.location));
+            
+            const cityCounts = {};
+            const salvadorNeighborhoods = {};
+
+            filteredData.forEach(rescue => {
+                console.log(`Processando localização: "${rescue.location}"`);
+                
+                const normalizedLocation = normalizeLocation(rescue.location);
+                console.log(`Localização normalizada: "${normalizedLocation}"`);
+                
+                // Verificar se é formato "Cidade - Bairro"
+                if (normalizedLocation.includes(' - ')) {
+                    const parts = normalizedLocation.split(' - ');
+                    const city = parts[0].trim();
+                    const neighborhood = parts[1].trim();
+                    
+                    console.log(`Cidade: "${city}", Bairro: "${neighborhood}"`);
+                    
+                    // Contar para a cidade
+                    cityCounts[city] = (cityCounts[city] || 0) + 1;
+                    
+                    // Se for Salvador, também contar para bairros
+                    if (city.toLowerCase() === 'salvador') {
+                        salvadorNeighborhoods[neighborhood] = (salvadorNeighborhoods[neighborhood] || 0) + 1;
+                        console.log(`Bairro de Salvador adicionado: ${neighborhood}`);
+                    }
                 } else {
-                    city = rescue.location;
+                    // Se não tem separador, tratar como cidade apenas
+                    const city = normalizedLocation.trim();
+                    cityCounts[city] = (cityCounts[city] || 0) + 1;
+                    console.log(`Cidade sem bairro: "${city}"`);
                 }
-                acc[city] = (acc[city] || 0) + 1;
-                return acc;
-            }, {});
+            });
 
-            const salvadorNeighborhoods = filteredData
-                .filter(rescue => rescue.location.includes('Salvador - '))
-                .reduce((acc, rescue) => {
-                    const neighborhood = rescue.location.split(' - ')[1];
-                    acc[neighborhood] = (acc[neighborhood] || 0) + 1;
-                    return acc;
-                }, {});
+            console.log('📊 Resultados finais:');
+            console.log('Cidades:', cityCounts);
+            console.log('Bairros de Salvador:', salvadorNeighborhoods);
 
+            // Atualizar lista de cidades
             const sortedCities = Object.entries(cityCounts)
                 .sort((a, b) => b[1] - a[1]);
 
@@ -2004,22 +2330,83 @@
                     <span class="location-count">${count}</span>
                 `;
                 cityList.appendChild(item);
+                console.log(`Cidade exibida: ${city} (${count} resgates)`);
             });
 
+            // Atualizar lista de bairros de Salvador
             const sortedNeighborhoods = Object.entries(salvadorNeighborhoods)
                 .sort((a, b) => b[1] - a[1]);
 
             const salvadorList = document.getElementById('salvador-neighborhoods');
             salvadorList.innerHTML = '';
-            sortedNeighborhoods.forEach(([neighborhood, count]) => {
-                const item = document.createElement('div');
-                item.className = 'location-item';
-                item.innerHTML = `
-                    <span>${neighborhood}</span>
-                    <span class="location-count" style="background: #e74c3c;">${count}</span>
-                `;
-                salvadorList.appendChild(item);
-            });
+            
+            if (sortedNeighborhoods.length === 0) {
+                salvadorList.innerHTML = '<p style="color: #666; font-style: italic; padding: 10px;">Nenhum bairro de Salvador no período selecionado.</p>';
+            } else {
+                sortedNeighborhoods.forEach(([neighborhood, count]) => {
+                    const item = document.createElement('div');
+                    item.className = 'location-item';
+                    item.innerHTML = `
+                        <span>${neighborhood}</span>
+                        <span class="location-count" style="background: #e74c3c;">${count}</span>
+                    `;
+                    salvadorList.appendChild(item);
+                    console.log(`Bairro exibido: ${neighborhood} (${count} resgates)`);
+                });
+            }
+        }
+
+        // Função para normalizar capitalização
+        function normalizeCapitalization(text) {
+            if (!text) return text;
+            
+            return text.toLowerCase()
+                .split(' ')
+                .map(word => {
+                    // Palavras que devem ficar em minúscula (preposições, artigos, conjunções)
+                    const lowercaseWords = ['de', 'da', 'do', 'das', 'dos', 'e', 'em', 'na', 'no', 'nas', 'nos', 'a', 'o', 'as', 'os'];
+                    
+                    if (lowercaseWords.includes(word.toLowerCase())) {
+                        return word.toLowerCase();
+                    }
+                    
+                    // Primeira letra maiúscula, resto minúscula
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                })
+                .join(' ');
+        }
+
+        // Função para normalizar localização completa - SUPER MELHORADA
+        function normalizeLocation(location) {
+            if (!location) return location;
+            
+            console.log(`🔧 Normalizando: "${location}"`);
+            
+            // Remover espaços extras e limpar
+            let cleaned = location.trim().replace(/\s+/g, ' ');
+            console.log(`   Limpo: "${cleaned}"`);
+            
+            // Normalizar hífens com diferentes variações de espaços
+            // Exemplos: "Salvador-Canela", "Salvador -canela", "Salvador- Canela", "Salvador  -  Canela"
+            cleaned = cleaned.replace(/\s*-\s*/g, ' - ');
+            console.log(`   Hífen normalizado: "${cleaned}"`);
+            
+            // Se tem formato "Cidade - Bairro"
+            if (cleaned.includes(' - ')) {
+                const parts = cleaned.split(' - ');
+                if (parts.length >= 2) {
+                    const city = normalizeCapitalization(parts[0].trim());
+                    const neighborhood = normalizeCapitalization(parts[1].trim());
+                    const result = `${city} - ${neighborhood}`;
+                    console.log(`   Resultado cidade-bairro: "${result}"`);
+                    return result;
+                }
+            }
+            
+            // Se é só uma localização (cidade)
+            const result = normalizeCapitalization(cleaned);
+            console.log(`   Resultado cidade: "${result}"`);
+            return result;
         }
 
         function filterAndUpdateTimeline() {
@@ -2057,9 +2444,10 @@
                 return dateB - dateA;
             });
 
-            sortedData.forEach(rescue => {
+            sortedData.forEach((rescue, index) => {
                 const item = document.createElement('div');
                 item.className = 'timeline-item';
+                item.style.setProperty('--delay', `${index * 0.1}s`);
                 
                 const config = animalConfig[rescue.animal] || { icon: '❓', color: '#7f8c8d' };
                 item.style.borderLeftColor = config.color;
@@ -2236,7 +2624,7 @@
                     species: document.getElementById('species').value || null,
                     date: document.getElementById('date').value,
                     time: document.getElementById('time').value,
-                    location: document.getElementById('location').value,
+                    location: normalizeLocation(document.getElementById('location').value),
                     observations: document.getElementById('observations').value || null,
                     timestamp: new Date(),
                     createdBy: currentUser.email
@@ -2295,16 +2683,27 @@
                             );
                             newRecord = { ...formData, id: docRef.id };
                             console.log(`✅ Criado no Firebase com ID: ${docRef.id}`);
+                            
+                            // Adicionar aos dados locais apenas se não existir
+                            const existingIndex = rescueData.findIndex(r => r.id === docRef.id);
+                            if (existingIndex === -1) {
+                                rescueData.push(newRecord);
+                                console.log(`✅ NOVO REGISTRO ADICIONADO LOCALMENTE - ID: ${newRecord.id}`);
+                            } else {
+                                console.log(`⚠️ Registro já existe localmente, não duplicando - ID: ${docRef.id}`);
+                            }
                         } catch (fbError) {
                             console.warn('⚠️ Erro no Firebase, criando localmente:', fbError);
                             newRecord = { ...formData, id: `local_${Date.now()}` };
+                            rescueData.push(newRecord);
+                            console.log(`✅ NOVO REGISTRO CRIADO LOCALMENTE - ID: ${newRecord.id}`);
                         }
                     } else {
                         newRecord = { ...formData, id: `local_${Date.now()}` };
+                        rescueData.push(newRecord);
+                        console.log(`✅ NOVO REGISTRO CRIADO LOCALMENTE - ID: ${newRecord.id}`);
                     }
                     
-                    rescueData.push(newRecord);
-                    console.log(`✅ NOVO REGISTRO CRIADO - ID: ${newRecord.id}`);
                     showSuccess('Resgate adicionado com sucesso!');
                 }
                 
@@ -2329,12 +2728,15 @@
             try {
                 console.log('🔄 Atualizando dados...');
                 
-                // Remover duplicatas primeiro
+                // Limpar localizações inconsistentes primeiro
+                cleanupLocationData();
+                
+                // Remover duplicatas
                 removeDuplicates();
                 
                 filteredData = filterDataByPeriod(rescueData, currentPeriod);
                 updateDashboard();
-                showSuccess('Dados atualizados e duplicatas removidas!');
+                showSuccess('Dados atualizados, localizações normalizadas e duplicatas removidas!');
                 
                 if (typeof window.firestore !== 'undefined' && typeof window.db !== 'undefined') {
                     loadFirebaseData().catch(error => {
@@ -2501,23 +2903,53 @@
                             console.log('📱 Verificando atualizações Firebase...');
                             const firebaseData = [];
                             snapshot.forEach((doc) => {
-                                firebaseData.push({ id: doc.id, ...doc.data() });
+                                const data = doc.data();
+                                // Normalizar localização dos dados do Firebase
+                                if (data.location) {
+                                    data.location = normalizeLocation(data.location);
+                                }
+                                firebaseData.push({ id: doc.id, ...data });
                             });
                             
                             // Verificar se houve mudanças significativas
                             const currentIds = rescueData.map(r => r.id).sort();
                             const firebaseIds = firebaseData.map(r => r.id).sort();
                             
+                            // Só sincronizar se há diferença real nos IDs (não apenas atualizações)
                             if (JSON.stringify(currentIds) !== JSON.stringify(firebaseIds)) {
                                 console.log('📊 Sincronizando dados do Firebase...');
                                 console.log(`   Local: ${rescueData.length} registros`);
                                 console.log(`   Firebase: ${firebaseData.length} registros`);
                                 
-                                rescueData = firebaseData;
-                                filteredData = filterDataByPeriod(rescueData, currentPeriod);
-                                updateDashboard();
+                                // Verificar se é uma adição de outro usuário ou uma remoção
+                                const isAddition = firebaseData.length > rescueData.length;
+                                const isRemoval = firebaseData.length < rescueData.length;
                                 
-                                console.log('✅ Dados sincronizados com Firebase');
+                                if (isAddition) {
+                                    // Só adicionar registros que não existem localmente
+                                    const localIds = new Set(rescueData.map(r => r.id));
+                                    const newRecords = firebaseData.filter(r => !localIds.has(r.id));
+                                    
+                                    if (newRecords.length > 0) {
+                                        console.log(`➕ Adicionando ${newRecords.length} novos registros do Firebase`);
+                                        rescueData.push(...newRecords);
+                                        filteredData = filterDataByPeriod(rescueData, currentPeriod);
+                                        updateDashboard();
+                                        console.log('✅ Novos dados sincronizados com Firebase');
+                                    }
+                                } else if (isRemoval) {
+                                    // Sincronizar remoções
+                                    rescueData = firebaseData;
+                                    filteredData = filterDataByPeriod(rescueData, currentPeriod);
+                                    updateDashboard();
+                                    console.log('✅ Remoções sincronizadas com Firebase');
+                                } else {
+                                    // Sincronização completa em caso de inconsistência
+                                    rescueData = firebaseData;
+                                    filteredData = filterDataByPeriod(rescueData, currentPeriod);
+                                    updateDashboard();
+                                    console.log('✅ Dados sincronizados com Firebase');
+                                }
                             }
                         },
                         (error) => {
