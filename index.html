@@ -1052,7 +1052,7 @@
         <div class="login-card">
             <div class="coppa-logo">🐍🦎🐢</div>
             <h2 class="login-title" id="auth-title">COPPA Dashboard</h2>
-            <p class="login-subtitle">Sistema de Gestão de Resgates de Animais Silvestres</p>
+            <p class="login-subtitle">Resgates de Animais Silvestres - Salvador e RMS</p>
             
             <div id="error-auth" class="error-message" style="display: none;"></div>
             
@@ -1287,6 +1287,109 @@
     </button>
 
     <script>
+        // ====== FUNÇÕES DE FUSO HORÁRIO CORRIGIDAS ======
+        
+        // Função para obter data local no formato YYYY-MM-DD
+        function getLocalDateString(date = new Date()) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Função para obter hora local no formato HH:MM
+        function getLocalTimeString(date = new Date()) {
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+
+        // Função para criar data a partir de string YYYY-MM-DD usando horário local
+        function createLocalDate(dateString) {
+            const [year, month, day] = dateString.split('-');
+            return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+        }
+
+        // Função para comparar datas usando apenas YYYY-MM-DD (ignorando horário)
+        function isSameDate(date1String, date2String) {
+            return date1String === date2String;
+        }
+
+        // Função para obter início e fim de períodos usando datas locais
+        function getLocalPeriodBounds(period) {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            
+            switch (period) {
+                case 'today':
+                    return {
+                        start: getLocalDateString(today),
+                        end: getLocalDateString(today)
+                    };
+                
+                case 'yesterday':
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    return {
+                        start: getLocalDateString(yesterday),
+                        end: getLocalDateString(yesterday)
+                    };
+                
+                case 'week':
+                    const startOfWeek = new Date(today);
+                    startOfWeek.setDate(today.getDate() - today.getDay());
+                    return {
+                        start: getLocalDateString(startOfWeek),
+                        end: getLocalDateString(today)
+                    };
+                
+                case 'lastWeek':
+                    const startOfLastWeek = new Date(today);
+                    startOfLastWeek.setDate(today.getDate() - today.getDay() - 7);
+                    const endOfLastWeek = new Date(startOfLastWeek);
+                    endOfLastWeek.setDate(startOfLastWeek.getDate() + 6);
+                    return {
+                        start: getLocalDateString(startOfLastWeek),
+                        end: getLocalDateString(endOfLastWeek)
+                    };
+                
+                case 'month':
+                    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+                    return {
+                        start: getLocalDateString(startOfMonth),
+                        end: getLocalDateString(today)
+                    };
+                
+                case 'lastMonth':
+                    const startOfLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    const endOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                    return {
+                        start: getLocalDateString(startOfLastMonth),
+                        end: getLocalDateString(endOfLastMonth)
+                    };
+                
+                case 'year':
+                    const startOfYear = new Date(today.getFullYear(), 0, 1);
+                    return {
+                        start: getLocalDateString(startOfYear),
+                        end: getLocalDateString(today)
+                    };
+                
+                case 'lastYear':
+                    const startOfLastYear = new Date(today.getFullYear() - 1, 0, 1);
+                    const endOfLastYear = new Date(today.getFullYear() - 1, 11, 31);
+                    return {
+                        start: getLocalDateString(startOfLastYear),
+                        end: getLocalDateString(endOfLastYear)
+                    };
+                
+                default:
+                    return null;
+            }
+        }
+
+        // ====== RESTO DO CÓDIGO ORIGINAL ======
+
         // Configuração dos tipos de animais
         const animalConfig = {
             serpente: { icon: '🐍', name: 'Serpentes', color: '#e74c3c' },
@@ -1312,12 +1415,14 @@
         let currentUser = null;
         let isLoginMode = true;
 
-        // Dados de exemplo com localização corrigida e variações problemáticas para teste
+        // Dados de exemplo com localização corrigida e horário local correto
         const initialData = [
-            // Dados de hoje (26/06/2025) para testar filtros
-            { animal: 'serpente', species: 'Jiboia', date: '2025-06-26', time: '14:30', location: 'Salvador - Pituba', observations: 'Animal resgatado hoje - teste' },
-            { animal: 'iguana', species: 'Iguana Verde', date: '2025-06-26', time: '09:15', location: 'Salvador - Barra', observations: 'Resgate de hoje' },
-            { animal: 'ave_rapina', species: 'Carcará', date: '2025-06-25', time: '16:45', location: 'Camaçari - Centro', observations: 'Resgate de ontem' },
+            // Dados de hoje usando horário local
+            { animal: 'serpente', species: 'Jiboia', date: getLocalDateString(), time: '14:30', location: 'Salvador - Pituba', observations: 'Animal resgatado hoje - teste' },
+            { animal: 'iguana', species: 'Iguana Verde', date: getLocalDateString(), time: '09:15', location: 'Salvador - Barra', observations: 'Resgate de hoje' },
+            
+            // Dados de ontem
+            { animal: 'ave_rapina', species: 'Carcará', date: getLocalDateString(new Date(Date.now() - 24*60*60*1000)), time: '16:45', location: 'Camaçari - Centro', observations: 'Resgate de ontem' },
             
             // Exemplos das variações problemáticas mencionadas pelo usuário
             { animal: 'teiu', species: 'Teiú Comum', date: '2025-06-24', time: '10:30', location: 'Salvador - Ogunjá', observations: 'Teste de bairro Ogunjá' },
@@ -1346,6 +1451,8 @@
 
         function initializeApp() {
             console.log('🚀 Inicializando aplicação...');
+            console.log('📅 Data local atual:', getLocalDateString());
+            console.log('🕐 Hora local atual:', getLocalTimeString());
             console.log('   Firebase app:', typeof window.firebaseApp);
             console.log('   Firebase auth:', typeof window.firebaseAuth);
             console.log('   Auth object:', typeof window.auth);
@@ -1403,6 +1510,12 @@
                 console.log('3. Teste de conexão Firebase:');
                 console.log('   Auth currentUser:', window.auth?.currentUser ? 'logado' : 'não logado');
                 console.log('   App name:', window.firebaseApp?.name);
+                
+                // Teste 4: Verificar horário local
+                console.log('4. Teste de horário local:');
+                console.log('   Data local:', getLocalDateString());
+                console.log('   Hora local:', getLocalTimeString());
+                console.log('   UTC:', new Date().toISOString());
                 
                 showAuthError('✅ Teste concluído! Verifique o console para detalhes.');
                 
@@ -1591,7 +1704,6 @@
         }
 
         function setupDateInputs() {
-            const today = new Date().toISOString().split('T')[0];
             document.getElementById('startDate').value = '';
             document.getElementById('endDate').value = '';
         }
@@ -1624,7 +1736,7 @@
                 return;
             }
             
-            if (new Date(startDate) > new Date(endDate)) {
+            if (startDate > endDate) {
                 showError('A data inicial deve ser anterior à data final.');
                 return;
             }
@@ -1638,8 +1750,7 @@
             
             // Filtrar dados por período customizado
             filteredData = rescueData.filter(rescue => {
-                const rescueDate = new Date(rescue.date);
-                return rescueDate >= new Date(startDate) && rescueDate <= new Date(endDate);
+                return rescue.date >= startDate && rescue.date <= endDate;
             });
             
             // Atualizar informações do período
@@ -1652,85 +1763,30 @@
         }
 
         function filterDataByPeriod(data, period) {
-            const now = new Date();
-            // Criar data de hoje sem problemas de timezone
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            switch (period) {
-                case 'all':
-                    return data;
-                    
-                case 'today':
-                    const todayString = now.toISOString().split('T')[0]; // YYYY-MM-DD
-                    return data.filter(rescue => {
-                        return rescue.date === todayString;
-                    });
-                    
-                case 'yesterday':
-                    const yesterday = new Date(now);
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    const yesterdayString = yesterday.toISOString().split('T')[0];
-                    return data.filter(rescue => {
-                        return rescue.date === yesterdayString;
-                    });
-                    
-                case 'week':
-                    const startOfWeek = new Date(today);
-                    startOfWeek.setDate(today.getDate() - today.getDay()); // Domingo da semana atual
-                    const startOfWeekString = startOfWeek.toISOString().split('T')[0];
-                    const todayString2 = now.toISOString().split('T')[0];
-                    return data.filter(rescue => {
-                        return rescue.date >= startOfWeekString && rescue.date <= todayString2;
-                    });
-                    
-                case 'lastWeek':
-                    const startOfLastWeek = new Date(today);
-                    startOfLastWeek.setDate(today.getDate() - today.getDay() - 7);
-                    const endOfLastWeek = new Date(startOfLastWeek);
-                    endOfLastWeek.setDate(startOfLastWeek.getDate() + 6);
-                    const startLastWeekString = startOfLastWeek.toISOString().split('T')[0];
-                    const endLastWeekString = endOfLastWeek.toISOString().split('T')[0];
-                    return data.filter(rescue => {
-                        return rescue.date >= startLastWeekString && rescue.date <= endLastWeekString;
-                    });
-                    
-                case 'month':
-                    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-                    const startOfMonthString = startOfMonth.toISOString().split('T')[0];
-                    const todayString3 = now.toISOString().split('T')[0];
-                    return data.filter(rescue => {
-                        return rescue.date >= startOfMonthString && rescue.date <= todayString3;
-                    });
-                    
-                case 'lastMonth':
-                    const startOfLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-                    const endOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-                    const startLastMonthString = startOfLastMonth.toISOString().split('T')[0];
-                    const endLastMonthString = endOfLastMonth.toISOString().split('T')[0];
-                    return data.filter(rescue => {
-                        return rescue.date >= startLastMonthString && rescue.date <= endLastMonthString;
-                    });
-                    
-                case 'year':
-                    const startOfYear = new Date(today.getFullYear(), 0, 1);
-                    const startOfYearString = startOfYear.toISOString().split('T')[0];
-                    const todayString4 = now.toISOString().split('T')[0];
-                    return data.filter(rescue => {
-                        return rescue.date >= startOfYearString && rescue.date <= todayString4;
-                    });
-                    
-                case 'lastYear':
-                    const startOfLastYear = new Date(today.getFullYear() - 1, 0, 1);
-                    const endOfLastYear = new Date(today.getFullYear() - 1, 11, 31);
-                    const startLastYearString = startOfLastYear.toISOString().split('T')[0];
-                    const endLastYearString = endOfLastYear.toISOString().split('T')[0];
-                    return data.filter(rescue => {
-                        return rescue.date >= startLastYearString && rescue.date <= endLastYearString;
-                    });
-                    
-                default:
-                    return data;
+            if (period === 'all') {
+                return data;
             }
+            
+            const bounds = getLocalPeriodBounds(period);
+            if (!bounds) {
+                return data;
+            }
+            
+            console.log(`🔍 Filtrando período ${period}:`, bounds);
+            
+            const filtered = data.filter(rescue => {
+                const rescueDate = rescue.date;
+                const isInPeriod = rescueDate >= bounds.start && rescueDate <= bounds.end;
+                
+                if (period === 'today' || period === 'yesterday') {
+                    console.log(`   ${rescueDate} está no período? ${isInPeriod}`);
+                }
+                
+                return isInPeriod;
+            });
+            
+            console.log(`✅ Resultado: ${filtered.length} registros de ${data.length} total`);
+            return filtered;
         }
 
         function updatePeriodInfo(period, startDate = null, endDate = null) {
@@ -1745,13 +1801,13 @@
                     break;
                 case 'today':
                     title = 'Hoje';
-                    const todayFormatted = formatDate(new Date().toISOString().split('T')[0]);
+                    const todayFormatted = formatDate(getLocalDateString());
                     description = `Resgates realizados hoje (${todayFormatted}).`;
                     break;
                 case 'yesterday':
                     const yesterday = new Date();
                     yesterday.setDate(yesterday.getDate() - 1);
-                    const yesterdayFormatted = formatDate(yesterday.toISOString().split('T')[0]);
+                    const yesterdayFormatted = formatDate(getLocalDateString(yesterday));
                     title = 'Ontem';
                     description = `Resgates realizados ontem (${yesterdayFormatted}).`;
                     break;
@@ -1877,7 +1933,7 @@
                 filteredData = filterDataByPeriod(rescueData, currentPeriod);
                 updateDashboard();
                 updateConnectionStatus(false);
-                showSuccess('Sistema carregado com dados de exemplo!');
+                showSuccess('Sistema carregado com dados de exemplo! (Horário local corrigido)');
             } catch (error) {
                 console.error('Erro ao carregar dados de exemplo:', error);
                 showError('Erro ao carregar dados.');
@@ -2139,7 +2195,8 @@
                 // Gráfico por dia da semana
                 const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
                 const dayCounts = filteredData.reduce((acc, rescue) => {
-                    const dayOfWeek = new Date(rescue.date).getDay();
+                    const rescueDate = createLocalDate(rescue.date);
+                    const dayOfWeek = rescueDate.getDay();
                     const dayName = dayNames[dayOfWeek];
                     acc[dayName] = (acc[dayName] || 0) + 1;
                     return acc;
@@ -2484,9 +2541,8 @@
         }
 
         function formatDate(dateString) {
-            // Criar data sem problemas de timezone
-            const [year, month, day] = dateString.split('-');
-            const date = new Date(year, month - 1, day);
+            // Usar função local para criar data sem problemas de timezone
+            const date = createLocalDate(dateString);
             return date.toLocaleDateString('pt-BR');
         }
 
@@ -2504,9 +2560,12 @@
             submitBtn.textContent = 'Salvar Resgate';
             submitBtn.style.opacity = '1';
             
-            const now = new Date();
-            const today = now.toISOString().split('T')[0];
-            const currentTime = now.toTimeString().slice(0, 5);
+            // CORRIGIDO: Usar funções de horário local
+            const today = getLocalDateString();
+            const currentTime = getLocalTimeString();
+            
+            console.log(`📅 Data padrão: ${today}`);
+            console.log(`🕐 Horário padrão: ${currentTime}`);
             
             document.getElementById('date').value = today;
             document.getElementById('time').value = currentTime;
@@ -2635,6 +2694,8 @@
                 }
 
                 console.log(`📋 ANTES - Total registros: ${rescueData.length}`);
+                console.log(`📅 Data do formulário: ${formData.date}`);
+                console.log(`🕐 Hora do formulário: ${formData.time}`);
                 
                 if (editingId) {
                     console.log(`✏️ MODO EDIÇÃO - ID: "${editingId}"`);
@@ -2800,7 +2861,8 @@
                 return false;
             }
 
-            const selectedDate = new Date(date);
+            // CORRIGIDO: Validação de data usando horário local
+            const selectedDate = createLocalDate(date);
             const today = new Date();
             today.setHours(23, 59, 59, 999);
 
@@ -2821,7 +2883,7 @@
             const isFirebase = typeof window.firestore !== 'undefined' && typeof window.db !== 'undefined';
             const source = isFirebase ? 'Firebase' : 'Local';
             const periodInfo = document.getElementById('period-info').querySelector('h4').textContent;
-            const exportDate = new Date().toISOString().split('T')[0];
+            const exportDate = getLocalDateString(); // CORRIGIDO: usar data local
             
             const csvContent = "data:text/csv;charset=utf-8," 
                 + "Animal,Espécie,Data,Horário,Localização,Observações,Animal_Especifico,Fonte,Período,Exportado_por,Data_Exportação\n"
