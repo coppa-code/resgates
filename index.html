@@ -1074,7 +1074,7 @@
         <div class="login-card">
             <div class="coppa-logo">🐍🦎🐢</div>
             <h2 class="login-title" id="auth-title">COPPA Dashboard</h2>
-            <p class="login-subtitle">Sistema de Gestão de Resgates de Animais Silvestres</p>
+            <p class="login-subtitle">Resgates de Animais Silvestres</p>
             
             <div id="error-auth" class="error-message" style="display: none;"></div>
             
@@ -1097,6 +1097,14 @@
                     🔧 Testar Firebase
                 </button>
                 
+                <button type="button" class="btn" onclick="testLastMonthFilter()" style="width: 100%; background: #e67e22; margin-bottom: 15px;">
+                    📅 Testar Filtro Mês Passado
+                </button>
+                
+                <button type="button" class="btn" onclick="quickTestLastMonth()" style="width: 100%; background: #e74c3c; margin-bottom: 15px;">
+                    🚨 Teste Rápido Dezembro
+                </button>
+                
                 <p style="text-align: center; margin-top: 15px;">
                     <span id="toggle-text">Não tem conta?</span>
                     <span class="toggle-mode" id="toggle-mode">Criar conta</span>
@@ -1115,12 +1123,6 @@
                 </div>
                 <h1>🐍 DASHBOARD SEA - COPPA</h1>
                 <p>Gestão de Resgates | Região Metropolitana de Salvador</p>
-            </div>
-
-            <!-- Informação de Timezone CORRIGIDO -->
-            <div class="timezone-info">
-                <h4>🌍 Fuso Horário Configurado: Salvador/Bahia (UTC-3)</h4>
-                <p>O sistema agora filtra corretamente os dados considerando o horário local de Salvador. Problema das 21h resolvido!</p>
             </div>
 
             <!-- Filtros por Período -->
@@ -1410,6 +1412,19 @@
             { animal: 'iguana', species: 'Iguana Verde', date: getTodayLocal(), time: '21:15', location: 'Salvador - Barra', observations: 'Resgate às 21h - agora conta como hoje!' },
             { animal: 'ave_rapina', species: 'Carcará', date: getDaysAgoLocal(1), time: '16:45', location: 'Camaçari - Centro', observations: 'Resgate de ontem' },
             
+            // DADOS DO MÊS PASSADO (DEZEMBRO 2024) - CORRIGIDO PARA GARANTIR QUE EXISTEM
+            { animal: 'serpente', species: 'Jiboia', date: '2024-12-01', time: '08:30', location: 'Salvador - Ondina', observations: 'Primeiro dia do mês passado' },
+            { animal: 'iguana', species: 'Iguana Verde', date: '2024-12-05', time: '10:15', location: 'Salvador - Pituba', observations: 'Início do mês passado' },
+            { animal: 'teiu', species: 'Teiú', date: '2024-12-10', time: '14:20', location: 'Camaçari - Centro', observations: 'Meio do mês passado' },
+            { animal: 'ave_rapina', species: 'Carcará', date: '2024-12-15', time: '16:45', location: 'Salvador - Barra', observations: 'Metade do mês passado' },
+            { animal: 'jabuti', species: 'Jabuti', date: '2024-12-20', time: '11:30', location: 'Lauro de Freitas - Centro', observations: 'Final do mês passado' },
+            { animal: 'sariguê', species: 'Gambá', date: '2024-12-25', time: '09:15', location: 'Salvador - Itapuã', observations: 'Natal do mês passado' },
+            { animal: 'primata', species: 'Sagui', date: '2024-12-31', time: '23:45', location: 'Salvador - Pituba', observations: 'Último dia do mês passado' },
+            
+            // Dados do mês passado anterior para contraste (Novembro 2024)
+            { animal: 'serpente', species: 'Jiboia', date: '2024-11-15', time: '10:30', location: 'Salvador - Ondina', observations: 'Resgate de novembro - NÃO deve aparecer no filtro dezembro' },
+            { animal: 'iguana', species: 'Iguana', date: '2024-11-20', time: '14:15', location: 'Salvador - Barra', observations: 'Outro resgate de novembro' },
+            
             // Exemplos das variações problemáticas mencionadas pelo usuário
             { animal: 'teiu', species: 'Teiú Comum', date: getDaysAgoLocal(2), time: '10:30', location: 'Salvador - Ogunjá', observations: 'Teste de bairro Ogunjá' },
             { animal: 'serpente', species: 'Jiboia', date: getDaysAgoLocal(2), time: '11:15', location: 'Salvador -Canela', observations: 'Formato problemático - sem espaço antes do hífen' },
@@ -1420,14 +1435,9 @@
             { animal: 'primata', species: 'Sagui', date: getDaysAgoLocal(2), time: '16:10', location: 'Salvador -Brotas', observations: 'Mais um formato problemático' },
             { animal: 'mamifero', species: 'Tamanduá', date: getDaysAgoLocal(2), time: '21:30', location: 'Salvador- Bonocô', observations: 'Teste 21:30 - deve contar como mesmo dia' },
             
-            // Dados históricos
-            { animal: 'serpente', species: 'Jiboia', date: '2024-12-20', time: '14:30', location: 'Salvador - Pituba', observations: 'Animal em bom estado' },
-            { animal: 'iguana', species: 'Iguana Verde', date: '2024-12-19', time: '09:15', location: 'Salvador - Barra', observations: 'Encontrada em quintal residencial' },
-            { animal: 'ave_rapina', species: 'Carcará', date: '2024-12-18', time: '16:45', location: 'Camaçari - Centro', observations: 'Ave ferida, levada para tratamento' },
-            { animal: 'sariguê', species: 'Gambá', date: '2024-12-17', time: '20:30', location: 'Salvador - Ondina', observations: 'Filhotes encontrados' },
-            { animal: 'teiu', species: 'Teiú Comum', date: '2024-12-15', time: '11:20', location: 'Lauro de Freitas - Centro', observations: 'Animal adulto saudável' },
-            { animal: 'serpente', species: 'Coral Falsa', date: '2024-12-10', time: '22:45', location: 'Salvador - Itapuã', observations: 'Encontrada às 22:45 - teste timezone' },
-            { animal: 'jabuti', species: 'Jabuti Piranga', date: '2024-12-05', time: '13:10', location: 'Simões Filho - Centro', observations: 'Animal de estimação perdido' }
+            // Dados históricos adicionais
+            { animal: 'serpente', species: 'Coral Falsa', date: '2024-10-10', time: '22:45', location: 'Salvador - Itapuã', observations: 'Outubro - teste controle' },
+            { animal: 'jabuti', species: 'Jabuti Piranga', date: '2024-09-05', time: '13:10', location: 'Simões Filho - Centro', observations: 'Setembro - teste controle' }
         ];
 
         // Inicializar quando a página carregar
@@ -1468,6 +1478,193 @@
             setupEventListeners();
             setupSearchFunction();
             setupDateInputs();
+        }
+
+        function quickTestLastMonth() {
+            console.log('🚨 TESTE RÁPIDO - DEZEMBRO 2024:');
+            console.log('================================');
+            
+            // Dados de teste diretos
+            const testData = [
+                { animal: 'serpente', date: '2024-12-01', time: '08:00', location: 'Salvador - Teste' },
+                { animal: 'iguana', date: '2024-12-15', time: '12:00', location: 'Salvador - Teste' },
+                { animal: 'teiu', date: '2024-12-31', time: '18:00', location: 'Salvador - Teste' },
+                { animal: 'ave_rapina', date: '2025-01-05', time: '10:00', location: 'Salvador - Janeiro' },
+                { animal: 'jabuti', date: '2024-11-20', time: '14:00', location: 'Salvador - Novembro' }
+            ];
+            
+            console.log('📊 Dados de teste:');
+            testData.forEach(item => {
+                console.log(`   • ${item.date} - ${item.animal}`);
+            });
+            
+            // Testar filtro manualmente
+            const hoje = new Date('2025-01-07'); // Simular hoje
+            const firstDay = new Date(2024, 11, 1); // 1º dezembro 2024
+            const lastDay = new Date(2024, 11, 31); // 31 dezembro 2024
+            
+            console.log(`📅 Range: ${firstDay.toLocaleDateString()} até ${lastDay.toLocaleDateString()}`);
+            
+            const resultados = testData.filter(item => {
+                const itemDate = new Date(item.date);
+                const inRange = itemDate >= firstDay && itemDate <= lastDay;
+                console.log(`   ${item.date}: ${inRange ? '✅ DENTRO' : '❌ FORA'} do range`);
+                return inRange;
+            });
+            
+            console.log(`🎯 Resultado: ${resultados.length} itens de dezembro encontrados`);
+            resultados.forEach(item => {
+                console.log(`   ✅ ${item.date} - ${item.animal}`);
+            });
+            
+            // Testar função real se estivermos logados
+            if (typeof rescueData !== 'undefined' && rescueData.length > 0) {
+                console.log('🔍 Testando função real...');
+                const realResult = filterDataByPeriodLocal(rescueData, 'lastMonth');
+                console.log(`📊 Função real encontrou: ${realResult.length} registros`);
+            }
+            
+            showAuthError(`🚨 Teste rápido concluído! ${resultados.length} registros de dezembro encontrados no teste manual. Verifique o console.`);
+        }
+
+        function forceLastMonthFilter() {
+            console.log('🚨 FORÇANDO FILTRO MÊS PASSADO DIRETAMENTE:');
+            console.log('==========================================');
+            
+            // Garantir dados carregados
+            if (rescueData.length === 0) {
+                loadSampleData();
+            }
+            
+            console.log(`📊 Total de dados: ${rescueData.length}`);
+            
+            // Aplicar filtro diretamente
+            console.log('🔧 Aplicando filtro lastMonth diretamente...');
+            filteredData = filterDataByPeriodLocal(rescueData, 'lastMonth');
+            currentPeriod = 'lastMonth';
+            
+            console.log(`✅ Filtro aplicado: ${filteredData.length} registros`);
+            
+            // Atualizar botões manualmente
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const lastMonthBtn = document.querySelector(`[onclick="setPeriod('lastMonth')"]`);
+            if (lastMonthBtn) {
+                lastMonthBtn.classList.add('active');
+                console.log('🎯 Botão "Mês Passado" marcado como ativo');
+            }
+            
+            // Atualizar informações do período
+            updatePeriodInfo('lastMonth');
+            
+            // Atualizar dashboard
+            updateDashboard();
+            
+            console.log('📱 Dashboard atualizado');
+            
+            // Mostrar dados filtrados no console
+            console.log('📋 DADOS FILTRADOS:');
+            filteredData.forEach((rescue, index) => {
+                console.log(`   ${index + 1}. ${rescue.date} ${rescue.time} - ${rescue.animal} em ${rescue.location}`);
+            });
+            
+            showSuccess(`🚨 FILTRO FORÇADO! ${filteredData.length} registros de dezembro/2024 encontrados. Dashboard atualizado.`);
+        }
+
+        function testLastMonthFilter() {
+            console.log('📅 TESTE FORÇADO DO FILTRO MÊS PASSADO:');
+            console.log('=========================================');
+            
+            // FORÇAR carregamento dos dados se necessário
+            if (rescueData.length === 0) {
+                console.log('⚠️ Dados vazios - carregando dados de exemplo...');
+                loadSampleData();
+                console.log(`✅ Dados carregados: ${rescueData.length} registros`);
+            }
+            
+            const hoje = getTodayLocal();
+            const todayDate = createLocalDate(hoje);
+            
+            console.log('1. INFORMAÇÕES BÁSICAS:');
+            console.log(`   Hoje: ${hoje} (${todayDate.toLocaleDateString()})`);
+            console.log(`   Mês atual: ${todayDate.getMonth() + 1}/${todayDate.getFullYear()}`);
+            console.log(`   Total de dados: ${rescueData.length} registros`);
+            
+            // Calcular mês passado
+            const firstDayLastMonth = new Date(todayDate.getFullYear(), todayDate.getMonth() - 1, 1);
+            const lastDayLastMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+            
+            console.log('2. RANGE DO MÊS PASSADO:');
+            console.log(`   Primeiro dia: ${firstDayLastMonth.toLocaleDateString()}`);
+            console.log(`   Último dia: ${lastDayLastMonth.toLocaleDateString()}`);
+            console.log(`   Mês passado: ${firstDayLastMonth.getMonth() + 1}/${firstDayLastMonth.getFullYear()}`);
+            
+            // Mostrar todos os dados disponíveis
+            console.log('3. TODOS OS DADOS DISPONÍVEIS:');
+            rescueData.forEach((rescue, index) => {
+                console.log(`   ${index + 1}. ${rescue.date} ${rescue.time} - ${rescue.animal} em ${rescue.location}`);
+            });
+            
+            // Testar especificamente dados de dezembro 2024
+            console.log('4. DADOS DE DEZEMBRO 2024 (mês passado esperado):');
+            const dezData = rescueData.filter(r => r.date && r.date.startsWith('2024-12'));
+            dezData.forEach(rescue => {
+                console.log(`   📋 ${rescue.date} - ${rescue.animal} em ${rescue.location} (${rescue.observations})`);
+            });
+            
+            // EXECUTAR FILTRO COM LOGS DETALHADOS
+            console.log('5. EXECUTANDO FILTRO (COM LOGS DETALHADOS)...');
+            console.log('   Chamando filterDataByPeriodLocal...');
+            
+            const filteredResults = filterDataByPeriodLocal(rescueData, 'lastMonth');
+            
+            console.log('6. RESULTADOS FINAIS:');
+            console.log(`   Total encontrado: ${filteredResults.length} registros`);
+            if (filteredResults.length > 0) {
+                filteredResults.forEach((rescue, index) => {
+                    console.log(`   ✅ ${index + 1}. ${rescue.date} ${rescue.time} - ${rescue.animal} em ${rescue.location}`);
+                });
+            } else {
+                console.log('   ❌ NENHUM RESULTADO ENCONTRADO!');
+            }
+            
+            // Testar manualmente uma data específica
+            console.log('7. TESTE MANUAL COM DATA ESPECÍFICA:');
+            const testeData = '2024-12-15';
+            const testDate = createLocalDate(testeData);
+            const testNormalized = new Date(testDate);
+            testNormalized.setHours(12, 0, 0, 0);
+            
+            console.log(`   Testando data: ${testeData}`);
+            console.log(`   Data criada: ${testDate.toLocaleDateString()}`);
+            console.log(`   Data normalizada: ${testNormalized.toLocaleDateString()}`);
+            console.log(`   Está >= primeiro dia? ${testNormalized >= firstDayLastMonth}`);
+            console.log(`   Está <= último dia? ${testNormalized <= lastDayLastMonth}`);
+            console.log(`   Resultado manual: ${testNormalized >= firstDayLastMonth && testNormalized <= lastDayLastMonth}`);
+            
+            // Aplicar filtro na interface se estivermos no dashboard
+            if (!document.getElementById('dashboard').classList.contains('hidden')) {
+                console.log('8. APLICANDO FILTRO NA INTERFACE...');
+                setPeriod('lastMonth');
+                console.log(`   Interface atualizada: ${filteredData.length} registros visíveis`);
+            }
+            
+            const message = `✅ Teste concluído! 
+📊 Dados totais: ${rescueData.length}
+📅 Dezembro 2024: ${dezData.length} registros  
+🔍 Filtro resultado: ${filteredResults.length} registros
+📍 Mês passado: ${firstDayLastMonth.getMonth() + 1}/${firstDayLastMonth.getFullYear()}
+🔍 Verifique o console para logs detalhados.`;
+            
+            if (document.getElementById('dashboard').classList.contains('hidden')) {
+                // Estamos na tela de login
+                showAuthError(message);
+            } else {
+                // Estamos no dashboard
+                showSuccess(message);
+            }
         }
 
         function testFirebase() {
@@ -1702,10 +1899,19 @@
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
+            
+            // Usar uma abordagem mais robusta para encontrar o botão clicado
+            const clickedButton = document.querySelector(`[onclick="setPeriod('${period}')"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            console.log(`🎯 Filtro selecionado: ${period}`);
             
             // Filtrar dados baseado no período - USANDO NOVA FUNÇÃO
             filteredData = filterDataByPeriodLocal(rescueData, period);
+            
+            console.log(`📊 Resultado do filtro ${period}: ${filteredData.length} registros`);
             
             // Atualizar informações do período
             updatePeriodInfo(period);
@@ -1834,18 +2040,46 @@
                     return monthResults;
                     
                 case 'lastMonth':
-                    const lastMonthResults = data.filter(rescue => {
-                        const rescueDate = createLocalDate(rescue.date);
-                        if (!rescueDate) return false;
+                    console.log(`🔍 FILTRO MÊS PASSADO - VERSÃO SIMPLIFICADA`);
+                    
+                    // Calcular mês passado de forma ultra-simples
+                    const now = new Date();
+                    const currentYear = now.getFullYear();
+                    const currentMonth = now.getMonth(); // 0-11
+                    
+                    let lastMonthYear = currentYear;
+                    let lastMonthNum = currentMonth - 1;
+                    
+                    // Se estamos em janeiro, mês passado é dezembro do ano anterior
+                    if (lastMonthNum < 0) {
+                        lastMonthNum = 11;
+                        lastMonthYear = currentYear - 1;
+                    }
+                    
+                    console.log(`📅 Hoje: ${currentMonth + 1}/${currentYear}`);
+                    console.log(`📅 Mês passado: ${lastMonthNum + 1}/${lastMonthYear}`);
+                    
+                    const results = data.filter(rescue => {
+                        if (!rescue.date) return false;
                         
-                        const lastMonth = new Date(todayDate);
-                        lastMonth.setMonth(lastMonth.getMonth() - 1);
+                        // Extrair ano e mês da data do resgate
+                        const dateParts = rescue.date.split('-');
+                        if (dateParts.length !== 3) return false;
                         
-                        return rescueDate.getFullYear() === lastMonth.getFullYear() &&
-                               rescueDate.getMonth() === lastMonth.getMonth();
+                        const rescueYear = parseInt(dateParts[0]);
+                        const rescueMonth = parseInt(dateParts[1]) - 1; // converter para 0-11
+                        
+                        const isMatch = rescueYear === lastMonthYear && rescueMonth === lastMonthNum;
+                        
+                        if (isMatch) {
+                            console.log(`✅ ENCONTRADO: ${rescue.date} - ${rescue.animal}`);
+                        }
+                        
+                        return isMatch;
                     });
-                    console.log(`✅ Encontrados ${lastMonthResults.length} resgates para mês passado`);
-                    return lastMonthResults;
+                    
+                    console.log(`🎯 RESULTADO SIMPLIFICADO: ${results.length} registros de ${lastMonthNum + 1}/${lastMonthYear}`);
+                    return results;
                     
                 case 'year':
                     const yearResults = data.filter(rescue => {
@@ -1879,6 +2113,10 @@
             const subtitleElement = document.getElementById('period-subtitle');
             let title, description;
             
+            // Definir nomes dos meses para uso em multiple cases
+            const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                              'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            
             switch (period) {
                 case 'all':
                     title = 'Todos os Dados';
@@ -1904,17 +2142,16 @@
                     description = 'Resgates realizados na semana passada - Timezone local.';
                     break;
                 case 'month':
-                    const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                                      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
                     const today = createLocalDate(getTodayLocal());
                     title = 'Este Mês';
                     description = `Resgates realizados em ${monthNames[today.getMonth()]} de ${today.getFullYear()} - Timezone local.`;
                     break;
                 case 'lastMonth':
-                    const lastMonth = createLocalDate(getTodayLocal());
-                    lastMonth.setMonth(lastMonth.getMonth() - 1);
+                    const currentDate = createLocalDate(getTodayLocal());
+                    // Criar data do primeiro dia do mês passado de forma robusta
+                    const lastMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
                     title = 'Mês Passado';
-                    description = `Resgates realizados em ${monthNames[lastMonth.getMonth()]} de ${lastMonth.getFullYear()} - Timezone local.`;
+                    description = `Resgates realizados em ${monthNames[lastMonthDate.getMonth()]} de ${lastMonthDate.getFullYear()} - Timezone local.`;
                     break;
                 case 'year':
                     const currentYear = createLocalDate(getTodayLocal()).getFullYear();
@@ -2582,11 +2819,11 @@
                 return;
             }
 
-            // Ordenar por data e hora mais recentes - USANDO TIMEZONE LOCAL
+            // Ordenar por data e hora mais recentes primeiro (ordem decrescente) - USANDO TIMEZONE LOCAL
             const sortedData = data.sort((a, b) => {
-                const dateA = createLocalDate(a.date + ' ' + a.time);
-                const dateB = createLocalDate(b.date + ' ' + b.time);
-                return dateB - dateA;
+                const dateTimeA = new Date(a.date + 'T' + a.time);
+                const dateTimeB = new Date(b.date + 'T' + b.time);
+                return dateTimeB - dateTimeA; // Mais recente primeiro
             });
 
             sortedData.forEach((rescue, index) => {
@@ -2873,15 +3110,31 @@
             try {
                 console.log('🔄 Atualizando dados...');
                 
+                // Garantir que os dados estão carregados
+                if (rescueData.length === 0) {
+                    console.log('📋 Recarregando dados de exemplo...');
+                    loadSampleData();
+                }
+                
                 // Limpar localizações inconsistentes primeiro
                 cleanupLocationData();
                 
                 // Remover duplicatas
                 removeDuplicates();
                 
+                // Testar filtro do mês passado
+                console.log('📅 Testando filtro mês passado após reload...');
+                const lastMonthCount = filterDataByPeriodLocal(rescueData, 'lastMonth').length;
+                console.log(`📅 Resultado teste - Mês passado: ${lastMonthCount} registros`);
+                
+                // Mostrar dados de dezembro para debug
+                const dezData = rescueData.filter(r => r.date && r.date.startsWith('2024-12'));
+                console.log(`📊 Dados dezembro disponíveis: ${dezData.length}`);
+                dezData.forEach(r => console.log(`   • ${r.date} - ${r.animal}`));
+                
                 filteredData = filterDataByPeriodLocal(rescueData, currentPeriod);
                 updateDashboard();
-                showSuccess('Dados atualizados, localizações normalizadas e duplicatas removidas! Timezone Salvador/BA OK.');
+                showSuccess(`Dados atualizados! Timezone Salvador/BA OK. Dezembro: ${dezData.length}, Filtro mês passado: ${lastMonthCount} registros.`);
                 
                 if (typeof window.firestore !== 'undefined' && typeof window.db !== 'undefined') {
                     loadFirebaseData().catch(error => {
